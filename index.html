@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAID STUDIOS | Kito Shelby x El Juego del Deseo</title>
+    <style>
+        :root {
+            --bg-dark: #000000;
+            --bg-card: rgba(28, 28, 32, 0.58);
+            --bg-card-alt: rgba(44, 44, 48, 0.45);
+            --text-light: #f5f5f7;
+            --text-muted: #86868b;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --border-hover: rgba(255, 255, 255, 0.25);
+            --accent: #ff2d55; /* Apple Crimson / Hot Desire */
+            --accent-amber: #ff9f0a;
+            --accent-purple: #bf5af2;
+            --glass-blur: blur(22px);
+        }
+
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: local('-apple-system'), local('BlinkMacSystemFont');
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.47;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Dynamic Ambient Glow */
+        .bg-glow {
+            position: fixed;
+            top: -12vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80vw;
+            height: 75vh;
+            background: radial-gradient(circle, rgba(255, 45, 85, 0.16) 0%, transparent 62%);
+            filter: blur(95px);
+            z-index: -1;
+            pointer-events: none;
+            transition: background 0.6s ease;
+        }
+
+        /* Smooth Reveal Animation */
+        .reveal { 
+            opacity: 0;
+            transform: translateY(28px) scale(0.985);
+            filter: blur(8px);
+            transition: all 0.75s cubic-bezier(0.16, 1, 0.3, 1); 
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+
+        /* Sticky Apple Glass Navbar */
+        nav {
+            padding: 13px 5%;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(18, 18, 20, 0.78);
+            backdrop-filter: saturate(180%) var(--glass-blur);
+            -webkit-backdrop-filter: saturate(180%) var(--glass-blur);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+        .logo-container:hover { opacity: 0.85; }
+        
+        .logo-icon {
+            width: 26px;
+            height: 26px;
+            background: linear-gradient(135deg, #fff 0%, #a1a1a6 100%);
+            border-radius: 7px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #000;
+            font-size: 14px;
+            font-weight: 800;
+        }
+        
+        .logo-text {
+            font-size: 19px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #fff;
+        }
+        .logo-text span {
+            font-weight: 400;
+            color: var(--text-muted);
+            font-size: 19px;
+        }
+        
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-outline {
+            background-color: #fff;
+            color: #000;
+            padding: 8px 18px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 980px;
+            text-decoration: none;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s, background-color 0.3s;
+        }
+        .btn-outline:hover {
+            transform: scale(1.04);
+            box-shadow: 0 4px 16px rgba(255,255,255,0.22);
+        }
+
+        /* Client Exclusive Badge */
+        .client-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 18px;
+            background: rgba(255, 45, 85, 0.12);
+            border: 1px solid rgba(255, 45, 85, 0.35);
+            border-radius: 980px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 24px;
+            color: var(--accent);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+        }
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: currentColor;
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 95px 5% 55px;
+            max-width: 980px;
+            margin: 0 auto;
+        }
+        .hero h1 { 
+            font-size: 4.3rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin-bottom: 36px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Market Authority Benchmark Strip */
+        .benchmark-banner {
+            max-width: 920px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 22px;
+            padding: 22px 28px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+            backdrop-filter: var(--glass-blur);
+        }
+        .benchmark-text {
+            flex: 1;
+            min-width: 260px;
+            font-size: 0.95rem;
+            color: #d1d1d6;
+            line-height: 1.5;
+        }
+        .benchmark-text strong { color: #fff; }
+        .benchmark-pills {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .b-pill {
+            background: rgba(0,0,0,0.45);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            padding: 10px 16px;
+            text-align: center;
+        }
+        .b-pill .val {
+            display: block;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .b-pill .lbl {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 55px 5%;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            color: #fff;
+            letter-spacing: -0.025em;
+        }
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            max-width: 780px;
+            margin: 0 auto 45px;
+            font-size: 1.15rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        /* 3 Pillars Cards */
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 36px 28px;
+            border-radius: 24px;
+            backdrop-filter: var(--glass-blur);
+            transition: transform 0.4s ease, border-color 0.4s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--border-hover);
+        }
+        .feature-card .step-num {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 10px;
+            display: block;
+            transition: color 0.4s ease;
+        }
+        .feature-card h3 {
+            font-size: 1.35rem;
+            color: #fff;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            line-height: 1.52;
+        }
+
+        /* INTERACTIVE SEGMENTED CONTROL */
+        .style-selector-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 38px;
+        }
+        .style-segmented-control {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 980px;
+            padding: 6px;
+            display: inline-flex;
+            position: relative;
+            backdrop-filter: blur(12px);
+            max-width: 100%;
+            overflow-x: auto;
+        }
+        .style-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 12px 24px;
+            font-size: 0.98rem;
+            font-weight: 600;
+            border-radius: 980px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            position: relative;
+            z-index: 2;
+            white-space: nowrap;
+        }
+        .style-btn.active { color: #fff; }
+        
+        .active-pill {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            bottom: 6px;
+            width: calc(33.33% - 4px);
+            background: var(--accent);
+            border-radius: 980px;
+            z-index: 1;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s ease, width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 18px rgba(0,0,0,0.45);
+        }
+
+        /* Interactive Live Simulator Banner */
+        .ecosystem-summary {
+            margin-bottom: 36px;
+            background: linear-gradient(135deg, rgba(32, 32, 36, 0.85) 0%, rgba(14, 14, 16, 0.95) 100%);
+            border: 1.5px solid rgba(255, 45, 85, 0.45);
+            border-radius: 28px;
+            padding: 36px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            backdrop-filter: var(--glass-blur);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+            box-shadow: 0 18px 45px rgba(0,0,0,0.55);
+        }
+        .eco-info {
+            flex: 1;
+            min-width: 280px;
+        }
+        .eco-info .badge-eco {
+            color: var(--accent);
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            margin-bottom: 8px;
+            display: block;
+            transition: color 0.4s ease;
+        }
+        .eco-info h3 {
+            font-size: 1.85rem;
+            color: #fff;
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+        .eco-info p {
+            color: #d1d1d6;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        .eco-metrics-mini {
+            display: flex;
+            gap: 14px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+        .eco-chip {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            color: #fff;
+            font-weight: 600;
+        }
+        .eco-price-box {
+            text-align: right;
+            min-width: 230px;
+        }
+        .eco-price-box .total-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .eco-price-box .total-num {
+            font-size: 3.3rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            transition: opacity 0.25s ease;
+        }
+        .eco-price-box .total-sub {
+            font-size: 0.88rem;
+            color: var(--accent);
+            margin-top: 8px;
+            display: block;
+            font-weight: 600;
+            transition: color 0.4s ease;
+        }
+
+        /* 3 Pricing Cards Side-by-Side */
+        .pricing-card {
+            background: var(--bg-card);
+            padding: 36px 30px;
+            border-radius: 26px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: var(--glass-blur);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            position: relative;
+        }
+        .pricing-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--border-hover);
+        }
+        .pricing-card.selected-card {
+            background: linear-gradient(180deg, rgba(38, 38, 42, 0.9), rgba(14, 14, 18, 0.95));
+            transform: translateY(-8px);
+            box-shadow: 0 22px 50px rgba(0,0,0,0.65);
+        }
+        .card-tag {
+            position: absolute;
+            top: -12px;
+            right: 24px;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            background: #2c2c2e;
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .pricing-card h4 {
+            font-size: 1.35rem;
+            color: #fff;
+            margin-bottom: 4px;
+            letter-spacing: -0.01em;
+        }
+        .pricing-card .vol {
+            font-size: 0.92rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .pricing-card .price {
+            font-size: 2.85rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 2px;
+            letter-spacing: -0.04em;
+        }
+        .pricing-card .price-unit {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .pricing-card .per-video {
+            font-size: 0.86rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        
+        .pricing-list {
+            list-style: none;
+            margin-bottom: 26px;
+            flex-grow: 1;
+        }
+        .pricing-list li {
+            font-size: 0.92rem;
+            color: #d1d1d6;
+            padding: 9px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            line-height: 1.4;
+        }
+        .pricing-list li:last-child { border-bottom: none; }
+        .pricing-list li strong { color: #fff; }
+        .pricing-list li span.bullet {
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .btn-buy {
+            background: rgba(255,255,255,0.09);
+            color: #fff;
+            text-align: center;
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            margin-top: auto;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .btn-buy:hover {
+            background: rgba(255,255,255,0.18);
+        }
+
+        /* Executive Comparison Table */
+        .table-wrapper {
+            margin-top: 60px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 26px;
+            padding: 32px;
+            backdrop-filter: var(--glass-blur);
+            overflow-x: auto;
+        }
+        .table-wrapper h3 {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .comp-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 640px;
+        }
+        .comp-table th, .comp-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            font-size: 0.93rem;
+        }
+        .comp-table th {
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.78rem;
+            letter-spacing: 0.06em;
+        }
+        .comp-table td.feat-col {
+            color: #fff;
+            font-weight: 600;
+        }
+        .comp-table tr:last-child td {
+            border-bottom: none;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #fff;
+            padding-top: 18px;
+        }
+
+        /* Carousel 9:16 Videos */
+        .portfolio-section {
+            overflow: hidden;
+            padding: 15px 0 35px;
+            position: relative;
+        }
+        .carousel-track {
+            display: flex;
+            gap: 20px;
+            width: max-content;
+            animation: scrollCarousel 24s linear infinite;
+        }
+        .carousel-track:hover { animation-play-state: paused; }
+        .video-card { 
+            width: 250px;
+            height: 444px;
+            border-radius: 18px;
+            overflow: hidden; 
+            border: 1px solid var(--border-color);
+            background: linear-gradient(160deg, #1c1c1e 0%, #0d0d0f 100%);
+            flex-shrink: 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .video-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+        }
+        .video-fallback {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            z-index: 1;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .video-fallback .hook-tag {
+            background: rgba(255,45,85,0.15);
+            color: #ff2d55;
+            border: 1px solid rgba(255,45,85,0.3);
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        .portfolio-section::before, .portfolio-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 80px;
+            height: 100%;
+            z-index: 3;
+            pointer-events: none;
+        }
+        .portfolio-section::before { left: 0; background: linear-gradient(to right, var(--bg-dark), transparent); }
+        .portfolio-section::after { right: 0; background: linear-gradient(to left, var(--bg-dark), transparent); }
+
+        @keyframes scrollCarousel {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-250px * 4 - 20px * 4)); }
+        }
+
+        /* Contact & Closing Section */
+        .contact-section {
+            text-align: center;
+            padding: 75px 20px;
+            background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.03) 100%);
+            border-top: 1px solid var(--border-color);
+            margin-top: 30px;
+        }
+        .selected-plan-pill {
+            display: inline-block;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.14);
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            color: #d1d1d6;
+            margin-bottom: 24px;
+        }
+        .selected-plan-pill strong { color: #fff; }
+
+        .contact-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: var(--accent);
+            color: #fff;
+            padding: 17px 36px;
+            font-size: 1.08rem;
+            font-weight: 700;
+            border-radius: 980px;
+            text-decoration: none;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s, background-color 0.4s;
+            box-shadow: 0 10px 30px rgba(255, 45, 85, 0.3);
+        }
+        .contact-btn:hover {
+            transform: scale(1.03);
+        }
+        .contact-btn:active { transform: scale(0.97); }
+
+        .contact-btn-ig {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: rgba(255,255,255,0.06);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 17px 32px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border-radius: 980px;
+            text-decoration: none;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s;
+        }
+        .contact-btn-ig:hover {
+            transform: scale(1.03);
+            background-color: rgba(255,255,255,0.12);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 5%;
+            color: #555;
+            font-size: 0.82rem;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 920px) { 
+            .grid-3 { grid-template-columns: 1fr; } 
+            .hero h1 { font-size: 2.85rem; }
+            .hero p { font-size: 1.12rem; }
+            .ecosystem-summary { text-align: center; justify-content: center; padding: 28px 22px; }
+            .eco-price-box { text-align: center; }
+            .eco-metrics-mini { justify-content: center; }
+            .style-btn { padding: 10px 14px; font-size: 0.84rem; }
+            .benchmark-banner { text-align: center; justify-content: center; }
+            .benchmark-pills { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-glow" id="bgGlow"></div>
+
+    <!-- STICKY APPLE NAVBAR -->
+    <nav>
+        <div class="logo-container" onclick="window.scrollTo(0,0)">
+            <div class="logo-icon">M</div>
+            <div class="logo-text">MAID <span>STUDIOS</span></div>
+        </div>
+        <div class="nav-actions">
+            <a href="#planes" class="btn-outline" id="navCta">Elegir Paquete</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="hero reveal active">
+        <div class="client-badge" id="heroBadge">
+            <span class="pulse-dot"></span>
+            Propuesta Exclusiva • Kito Shelby x El Juego del Deseo
+        </div>
+        <h1>Alcance Orgánico +<br>Fábrica de Performance UGC.</h1>
+        <p>Unimos el impacto masivo de la comunidad de <strong>Kito Shelby</strong> con una batería mensual de anuncios UGC multiplicados por <strong>3 Hooks estratégicos</strong> para escalar tus campañas en Meta Ads y TikTok Ads con Código Spark activo.</p>
+
+        <!-- MARKET AUTHORITY ANCHOR -->
+        <div class="benchmark-banner">
+            <div class="benchmark-text">
+                <strong>Referencia de Mercado &amp; Beneficio Partner:</strong> En campañas internacionales recientes (como <strong>Huawei</strong>), una única publicación orgánica cotiza en $1,000 USD, y acciones estándar en el país rondan los $1,500 USD por 1 post y 3 videos sueltos. Al operar todo el ecosistema junto a <strong>Maid Studios</strong>, desbloquean esta estructura con volumen triplicado de variaciones.
+            </div>
+            <div class="benchmark-pills">
+                <div class="b-pill">
+                    <span class="val">$1,000 USD</span>
+                    <span class="lbl">1 Post Estándar (Huawei)</span>
+                </div>
+                <div class="b-pill">
+                    <span class="val" style="color: #ff2d55;" id="benchMultiplier">3x Hooks</span>
+                    <span class="lbl">Multiplicador Performance</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 3 PILARES DEL SISTEMA -->
+    <div class="container" style="padding-top: 15px;">
+        <div class="grid-3">
+            <div class="feature-card reveal">
+                <span class="step-num pillar-accent">01 • Exposición Nativa</span>
+                <h3>Tráfico Orgánico Directo</h3>
+                <p>Publicación nativa en el feed de <strong>Kito Shelby</strong> más secuencias de historias con link directo a la tienda para generar prueba social inmediata y picos de conversión orgánica.</p>
+            </div>
+            <div class="feature-card reveal">
+                <span class="step-num pillar-accent">02 • Ingeniería de Hooks (3x)</span>
+                <h3>Fábrica Anti-Fatiga para Ads</h3>
+                <p>Cada concepto UGC se entrega con <strong>3 ganchos distintos en los primeros 3 segundos</strong> (9, 18 o 24 piezas listas para pautar). Testeen ángulos A/B sin quemar a la audiencia en Meta Ads.</p>
+            </div>
+            <div class="feature-card reveal">
+                <span class="step-num pillar-accent">03 • Whitelisting &amp; Spark Ads</span>
+                <h3>Derechos de Pauta Incluidos</h3>
+                <p>Autorización legal de imagen por <strong>60 a 90 días</strong> y Código Spark / Partnership Ads para correr pauta directamente desde la cuenta oficial de Kito Shelby mejorando el CTR.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- INTERACTIVE PRICING & SIMULATOR SECTION -->
+    <div class="container" id="planes">
+        <h2 class="section-title reveal">Configurá el Nivel de Alianza</h2>
+        <p class="section-subtitle reveal">Alterná entre una acción puntual de lanzamiento o los planes mensuales de embajador para comparar el volumen de creativos UGC y el costo por activo.</p>
+
+        <!-- Apple Segmented Toggle Switch -->
+        <div class="style-selector-container reveal">
+            <div class="style-segmented-control">
+                <div class="active-pill" id="activePill"></div>
+                <button class="style-btn" onclick="selectOption(0, 'campana')" id="btn-campana">Opción 1: Campaña ($1,600)</button>
+                <button class="style-btn active" onclick="selectOption(1, 'partner')" id="btn-partner">Opción 2: Partner Mensual ⭐ ($2,800)</button>
+                <button class="style-btn" onclick="selectOption(2, 'vip')" id="btn-vip">Opción 3: Full VIP 🔥 ($3,500)</button>
+            </div>
+        </div>
+
+        <!-- DYNAMIC INTERACTIVE SUMMARY PANEL -->
+        <div class="ecosystem-summary reveal" id="ecoSummary">
+            <div class="eco-info">
+                <span class="badge-eco" id="eco-badge">OPCIÓN 2 SELECCIONADA • PARTNER MENSUAL RECOMENDADO</span>
+                <h3 id="eco-title">19 Videos Mensuales + Historias + Spark Ads</h3>
+                <p id="eco-desc">Diseñado para sostener presupuestos fuertes de pauta diaria. Duplica el volumen de anuncios (18 piezas UGC por mes) para eliminar la fatiga creativa en Meta y TikTok Ads asegurando la imagen continua de Kito.</p>
+                <div class="eco-metrics-mini">
+                    <span class="eco-chip" id="chip-org">📱 1 Post Orgánico + 2 Historias/mes</span>
+                    <span class="eco-chip" id="chip-ugc">🎯 18 Anuncios UGC (6 Bodies x 3 Hooks)</span>
+                    <span class="eco-chip" id="chip-rights">⚡ Spark Ads 60 días renovables</span>
+                </div>
+            </div>
+            <div class="eco-price-box">
+                <span class="total-label" id="eco-label">Inversión Mensual</span>
+                <div class="total-num">$<span id="price-total">2,800</span> <span style="font-size: 1.15rem; color: var(--text-muted); font-weight: 500;" id="price-period">USD/mes</span></div>
+                <span class="total-sub" id="total-sub">Costo promedio: $147 USD por video terminado</span>
+            </div>
+        </div>
+
+        <!-- 3 PACKAGES SIDE-BY-SIDE CARDS -->
+        <div class="grid-3 reveal">
+            <!-- OPCIÓN 1: $1,600 -->
+            <div class="pricing-card" id="card-0" onclick="selectOption(0, 'campana')">
+                <span class="card-tag">One-Shot</span>
+                <h4>1. Pack Campaña</h4>
+                <div class="vol" id="vol-0" style="color: #ff9f0a;">10 Videos Totales (Pago Único)</div>
+                <div class="price">$1,600 <span class="price-unit">USD</span></div>
+                <div class="per-video">($160 USD promedio por video final)</div>
+                <ul class="pricing-list">
+                    <li><span class="bullet" style="color: #ff9f0a;">✦</span> <span><strong>1 Video Orgánico en el perfil de Kito:</strong> Publicación nativa en su Instagram o TikTok.</span></li>
+                    <li><span class="bullet" style="color: #ff9f0a;">✦</span> <span><strong>3 Conceptos Base UGC (Bodies):</strong> 3 ángulos de venta distintos grabados por Kito.</span></li>
+                    <li><span class="bullet" style="color: #ff9f0a;">✦</span> <span><strong>9 Variaciones para Ads (3x3 Hooks):</strong> 3 ganchos distintos en los primeros 3 seg por cada video base.</span></li>
+                    <li><span class="bullet" style="color: #ff9f0a;">✦</span> <span><strong>Derechos + Código Spark (60 días):</strong> Permiso completo para pautar por 2 meses.</span></li>
+                </ul>
+                <a href="#contacto" class="btn-buy" id="btn-card-0" onclick="event.stopPropagation(); selectOption(0, 'campana', true);">Seleccionar Opción 1</a>
+            </div>
+            
+            <!-- OPCIÓN 2: $2,800 (RECOMENDADO) -->
+            <div class="pricing-card selected-card" id="card-1" onclick="selectOption(1, 'partner')">
+                <span class="card-tag" style="background: #ff2d55; border-color: #ff2d55;">Recomendado ⭐</span>
+                <h4>2. Partner Mensual</h4>
+                <div class="vol" id="vol-1" style="color: #ff2d55;">19 Videos / mes + 2 Historias</div>
+                <div class="price">$2,800 <span class="price-unit">USD / mes</span></div>
+                <div class="per-video">($147 USD promedio por video final)</div>
+                <ul class="pricing-list">
+                    <li><span class="bullet" style="color: #ff2d55;">✦</span> <span><strong>1 Video Orgánico Mensual:</strong> Presencia fija todos los meses en el perfil de Kito.</span></li>
+                    <li><span class="bullet" style="color: #ff2d55;">✦</span> <span><strong>2 Secuencias de Historias con Link:</strong> Tráfico directo al checkout en fechas clave del mes.</span></li>
+                    <li><span class="bullet" style="color: #ff2d55;">✦</span> <span><strong>6 Conceptos Base UGC (Doble Volumen):</strong> 6 estructuras mensuales para distintos públicos.</span></li>
+                    <li><span class="bullet" style="color: #ff2d55;">✦</span> <span><strong>18 Variaciones para Ads (6x3 Hooks):</strong> 18 creativos nuevos cada mes para escalar pauta.</span></li>
+                    <li><span class="bullet" style="color: #ff2d55;">✦</span> <span><strong>Licencia Continua + Spark Ads (60d):</strong> Renovación automática sobre todo el material.</span></li>
+                </ul>
+                <a href="#contacto" class="btn-buy" id="btn-card-1" onclick="event.stopPropagation(); selectOption(1, 'partner', true);">Seleccionar Opción 2</a>
+            </div>
+
+            <!-- OPCIÓN 3: $3,500 (FULL VIP) -->
+            <div class="pricing-card" id="card-2" onclick="selectOption(2, 'vip')">
+                <span class="card-tag" style="background: #bf5af2; border-color: #bf5af2;">Dominio Total 🔥</span>
+                <h4>3. Full Embajador VIP</h4>
+                <div class="vol" id="vol-2" style="color: #bf5af2;">26 Videos / mes + 4 Historias</div>
+                <div class="price">$3,500 <span class="price-unit">USD / mes</span></div>
+                <div class="per-video">($134 USD promedio • Máxima rentabilidad)</div>
+                <ul class="pricing-list">
+                    <li><span class="bullet" style="color: #bf5af2;">✦</span> <span><strong>2 Videos Orgánicos Mensuales (Doble Red):</strong> 1 Reel en el Instagram de Kito + 1 TikTok en su perfil.</span></li>
+                    <li><span class="bullet" style="color: #bf5af2;">✦</span> <span><strong>4 Secuencias de Historias con Link:</strong> 1 empuje semanal directo a la tienda online.</span></li>
+                    <li><span class="bullet" style="color: #bf5af2;">✦</span> <span><strong>8 Conceptos Base UGC por Mes:</strong> Cobertura total de ángulos para tráfico frío y retargeting.</span></li>
+                    <li><span class="bullet" style="color: #bf5af2;">✦</span> <span><strong>24 Variaciones para Ads (8x3 Hooks):</strong> Batería masiva de 24 anuncios mensuales editados.</span></li>
+                    <li><span class="bullet" style="color: #bf5af2;">✦</span> <span><strong>Derechos 90 días + Exclusividad:</strong> Bloqueo de categoría en juegos de mesa/cartas.</span></li>
+                </ul>
+                <a href="#contacto" class="btn-buy" id="btn-card-2" onclick="event.stopPropagation(); selectOption(2, 'vip', true);">Seleccionar Opción 3</a>
+            </div>
+        </div>
+
+        <!-- EXECUTIVE COMPARISON MATRIX TABLE -->
+        <div class="table-wrapper reveal">
+            <h3>Matriz Comparativa Completa</h3>
+            <table class="comp-table">
+                <thead>
+                    <tr>
+                        <th style="width: 28%;">Entregable / Beneficio</th>
+                        <th style="width: 24%;">Opción 1: Campaña</th>
+                        <th style="width: 24%; color: #ff2d55;">Opción 2: Partner ⭐</th>
+                        <th style="width: 24%; color: #bf5af2;">Opción 3: Full VIP 🔥</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="feat-col">Modalidad</td>
+                        <td>Pago Único (1 vez)</td>
+                        <td>Mensual Recurrente</td>
+                        <td>Embajador Mensual Full</td>
+                    </tr>
+                    <tr>
+                        <td class="feat-col">Posteos en Redes de Kito</td>
+                        <td>1 Video (IG o TikTok)</td>
+                        <td>1 Video / mes (IG o TikTok)</td>
+                        <td><strong>2 Videos / mes (1 IG + 1 TikTok)</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="feat-col">Historias Orgánicas con Link</td>
+                        <td>—</td>
+                        <td>2 Secuencias / mes</td>
+                        <td><strong>4 Secuencias / mes (Semanal)</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="feat-col">Conceptos Base UGC (Bodies)</td>
+                        <td>3 Videos Base</td>
+                        <td>6 Videos Base / mes</td>
+                        <td><strong>8 Videos Base / mes</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="feat-col">Anuncios con Variación (3 Hooks)</td>
+                        <td>9 Piezas UGC (3x3)</td>
+                        <td>18 Piezas UGC (6x3)</td>
+                        <td><strong>24 Piezas UGC (8x3)</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="feat-col">Volumen Total Entregado</td>
+                        <td>10 Videos Totales</td>
+                        <td>19 Videos / mes</td>
+                        <td><strong>26 Videos / mes</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="feat-col">Derechos de Imagen &amp; Spark Ads</td>
+                        <td>60 días incluidos</td>
+                        <td>60 días renovables</td>
+                        <td><strong>90 días + Exclusividad Rubro</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="feat-col">Costo Promedio por Video</td>
+                        <td>$160 USD / video</td>
+                        <td>$147 USD / video</td>
+                        <td><strong style="color: #bf5af2;">$134 USD / video</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="feat-col">INVERSIÓN FINAL</td>
+                        <td>$1,600 USD</td>
+                        <td style="color: #ff2d55;">$2,800 USD / mes</td>
+                        <td style="color: #bf5af2;">$3,500 USD / mes</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- MUESTRA DE REELS / CLIPS -->
+    <div class="container" style="padding-top: 10px;">
+        <h2 class="section-title reveal">Estética &amp; Ritmo de Conversión</h2>
+        <p class="section-subtitle reveal">Todos los entregables (tanto orgánicos como las variaciones UGC) salen completamente editados por Maid Studios con subtítulos dinámicos, SFX y retención visual.</p>
+
+        <div class="portfolio-section reveal">
+            <div class="carousel-track" id="videoTrack">
+                <!-- Generado dinámicamente con JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTACT & CLOSING SECTION -->
+    <div class="contact-section" id="contacto">
+        <div class="selected-plan-pill reveal" id="closingPill">
+            Paquete activo seleccionado: <strong id="closingPlanName">Opción 2: Partner Mensual ($2,800 USD/mes)</strong>
+        </div>
+        <h2 class="section-title reveal">¿Largamos el rodaje con las cartas?</h2>
+        <p class="section-subtitle reveal" style="margin-bottom: 24px;">Ya tenemos el producto físico en estudio listo para grabar. Confirmá la opción elegida por WhatsApp para bloquear la agenda de Kito Shelby y estructurar los primeros guiones.</p>
+        
+        <div class="contact-buttons reveal">
+            <!-- Dynamic WhatsApp Button -->
+            <a href="https://wa.me/5493442668219?text=Hola%20Valen!%20Vimos%20la%20propuesta%20web%20de%20Kito%20Shelby%20x%20El%20Juego%20del%20Deseo%20y%20queremos%20avanzar%20con%20la%20Opci%C3%B3n%202%3A%20Partner%20Mensual%20(%242%2C800%20USD%2Fmes)." class="contact-btn" id="waButton" target="_blank">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                <span id="waButtonText">Confirmar Opción 2 por WhatsApp</span>
+            </a>
+            
+            <!-- Instagram Button -->
+            <a href="https://www.instagram.com/maidstudios/" class="contact-btn-ig" target="_blank">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                </svg>
+                Maid Studios
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        MAID STUDIOS &copy; 2026 • PROPUESTA EXCLUSIVA KITO SHELBY x EL JUEGO DEL DESEO
+    </footer>
+
+    <script>
+        const optionsData = {
+            campana: {
+                color: '#ff9f0a', // Apple Amber Gold
+                btnTextColor: '#000',
+                badge: 'OPCIÓN 1 SELECCIONADA • PACK CAMPAÑA & TESTEO (PAGO ÚNICO)',
+                title: '10 Videos Totales (1 Orgánico + 9 Anuncios UGC)',
+                desc: 'Ideal para hacer un golpe de impacto inmediato en la comunidad de Kito Shelby y entregarle al equipo de Media Buying 9 variaciones de anuncios para encontrar el ángulo ganador en pauta.',
+                chipOrg: '📱 1 Post Orgánico (IG o TikTok)',
+                chipUgc: '🎯 9 Anuncios UGC (3 Bodies x 3 Hooks)',
+                chipRights: '⚡ Spark Ads y Derechos por 60 días',
+                label: 'Inversión Única (One-Shot)',
+                price: '1,600',
+                period: 'USD',
+                sub: 'Costo promedio: $160 USD por video terminado',
+                planFullName: 'Opción 1: Pack Campaña ($1,600 USD)',
+                waShort: 'Confirmar Opción 1 por WhatsApp',
+                waMsg: 'Hola Valen! Vimos la propuesta web de Kito Shelby x El Juego del Deseo y queremos avanzar con la Opción 1: Pack Campaña ($1,600 USD).'
+            },
+            partner: {
+                color: '#ff2d55', // Apple Crimson / Desire Red
+                btnTextColor: '#fff',
+                badge: 'OPCIÓN 2 SELECCIONADA • PARTNER MENSUAL RECOMENDADO ⭐',
+                title: '19 Videos Mensuales + 2 Historias + Spark Ads',
+                desc: 'Diseñado para sostener presupuestos fuertes de pauta diaria. Duplica el volumen de anuncios (18 piezas UGC nuevas cada mes) para eliminar la fatiga creativa en Meta y TikTok Ads.',
+                chipOrg: '📱 1 Post Orgánico + 2 Historias/mes',
+                chipUgc: '🎯 18 Anuncios UGC (6 Bodies x 3 Hooks)',
+                chipRights: '⚡ Spark Ads 60 días renovables',
+                label: 'Inversión Mensual Partner',
+                price: '2,800',
+                period: 'USD/mes',
+                sub: 'Costo promedio: $147 USD por video terminado',
+                planFullName: 'Opción 2: Partner Mensual ($2,800 USD/mes)',
+                waShort: 'Confirmar Opción 2 por WhatsApp',
+                waMsg: 'Hola Valen! Vimos la propuesta web de Kito Shelby x El Juego del Deseo y queremos avanzar con la Opción 2: Partner Mensual ($2,800 USD/mes).'
+            },
+            vip: {
+                color: '#bf5af2', // Apple VIP Purple
+                btnTextColor: '#fff',
+                badge: 'OPCIÓN 3 SELECCIONADA • FULL EMBAJADOR & DOMINIO VIP 🔥',
+                title: '26 Videos Mensuales (IG + TikTok) + 4 Historias + Exclusividad',
+                desc: 'Adueñate por completo de la imagen de Kito en ambas redes (Instagram y TikTok), sumá tráfico semanal en historias y recibí una fábrica masiva de 24 anuncios nuevos cada 30 días al menor costo por video.',
+                chipOrg: '📱 2 Posts/mes (IG + TikTok) + 4 Historias',
+                chipUgc: '🎯 24 Anuncios UGC (8 Bodies x 3 Hooks)',
+                chipRights: '⚡ 90 días Spark Ads + Exclusividad Rubro',
+                label: 'Inversión Mensual Full VIP',
+                price: '3,500',
+                period: 'USD/mes',
+                sub: 'Costo promedio: $134 USD por video (Máxima rentabilidad)',
+                planFullName: 'Opción 3: Full Embajador VIP ($3,500 USD/mes)',
+                waShort: 'Confirmar Opción 3 VIP por WhatsApp',
+                waMsg: 'Hola Valen! Vimos la propuesta web de Kito Shelby x El Juego del Deseo y queremos ir a fondo con la Opción 3: Full Embajador VIP ($3,500 USD/mes).'
+            }
+        };
+
+        const activePill = document.getElementById('activePill');
+        const bgGlow = document.getElementById('bgGlow');
+        const ecoSummary = document.getElementById('ecoSummary');
+        const heroBadge = document.getElementById('heroBadge');
+        const benchMultiplier = document.getElementById('benchMultiplier');
+        const waButton = document.getElementById('waButton');
+        const waButtonText = document.getElementById('waButtonText');
+        const closingPlanName = document.getElementById('closingPlanName');
+        const videoTrack = document.getElementById('videoTrack');
+
+        const sampleVideos = [
+            { file: 'medio1.mp4', label: 'Hook Variación A • Performance UGC' },
+            { file: 'medio2.mp4', label: 'Hook Variación B • Dinámica Parejas' },
+            { file: 'medio3.mp4', label: 'Hook Variación C • Retención Directa' },
+            { file: 'medio4.mp4', label: 'Reel Nativo • Tráfico Orgánico + CTA' }
+        ];
+
+        function renderCarousel() {
+            videoTrack.innerHTML = '';
+            const loopVids = [...sampleVideos, ...sampleVideos];
+            loopVids.forEach((item, idx) => {
+                const card = document.createElement('div');
+                card.className = 'video-card';
+                card.innerHTML = `
+                    <div class="video-fallback">
+                        <span class="hook-tag">Kito x Juego del Deseo</span>
+                        <strong style="color:#fff; margin-bottom:4px;">Pieza Muestra #${(idx % 4) + 1}</strong>
+                        <span>${item.label}</span>
+                    </div>
+                    <video autoplay loop muted playsinline>
+                        <source src="videos/${item.file}" type="video/mp4">
+                        <source src="${item.file}" type="video/mp4">
+                    </video>
+                `;
+                videoTrack.appendChild(card);
+            });
+        }
+
+        function selectOption(index, key, scrollToContact = false) {
+            const data = optionsData[key];
+            const buttons = document.querySelectorAll('.style-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.color = 'var(--text-muted)';
+            });
+
+            const selectedBtn = buttons[index];
+            selectedBtn.classList.add('active');
+            selectedBtn.style.color = data.btnTextColor;
+
+            // Move segmented pill
+            const btnWidth = selectedBtn.offsetWidth;
+            activePill.style.width = `${btnWidth}px`;
+            activePill.style.transform = `translateX(${selectedBtn.offsetLeft - 6}px)`;
+            activePill.style.backgroundColor = data.color;
+
+            // Update Ambient Glow & Accents
+            bgGlow.style.background = `radial-gradient(circle, ${data.color}2e 0%, transparent 62%)`;
+            heroBadge.style.color = data.color;
+            heroBadge.style.borderColor = `${data.color}55`;
+            heroBadge.style.backgroundColor = `${data.color}1f`;
+            benchMultiplier.style.color = data.color;
+
+            document.querySelectorAll('.pillar-accent').forEach(el => {
+                el.style.color = data.color;
+            });
+
+            // Highlight selected pricing card
+            [0, 1, 2].forEach(i => {
+                const card = document.getElementById(`card-${i}`);
+                const btn = document.getElementById(`btn-card-${i}`);
+                if (i === index) {
+                    card.classList.add('selected-card');
+                    card.style.borderColor = data.color;
+                    btn.style.backgroundColor = data.color;
+                    btn.style.color = data.btnTextColor;
+                    btn.innerText = '✓ Paquete Seleccionado';
+                } else {
+                    card.classList.remove('selected-card');
+                    card.style.borderColor = 'var(--border-color)';
+                    btn.style.backgroundColor = 'rgba(255,255,255,0.09)';
+                    btn.style.color = '#fff';
+                    btn.innerText = `Seleccionar Opción ${i + 1}`;
+                }
+            });
+
+            // Update Summary Panel with smooth fade
+            const priceTotalEl = document.getElementById('price-total');
+            priceTotalEl.parentElement.style.opacity = '0';
+
+            ecoSummary.style.borderColor = `${data.color}88`;
+            document.getElementById('eco-badge').style.color = data.color;
+            document.getElementById('total-sub').style.color = data.color;
+
+            setTimeout(() => {
+                document.getElementById('eco-badge').innerText = data.badge;
+                document.getElementById('eco-title').innerText = data.title;
+                document.getElementById('eco-desc').innerText = data.desc;
+                document.getElementById('chip-org').innerText = data.chipOrg;
+                document.getElementById('chip-ugc').innerText = data.chipUgc;
+                document.getElementById('chip-rights').innerText = data.chipRights;
+                document.getElementById('eco-label').innerText = data.label;
+                priceTotalEl.innerText = data.price;
+                document.getElementById('price-period').innerText = data.period;
+                document.getElementById('total-sub').innerText = data.sub;
+                priceTotalEl.parentElement.style.opacity = '1';
+            }, 180);
+
+            // Update Closing Section & WhatsApp Link
+            closingPlanName.innerText = data.planFullName;
+            closingPlanName.style.color = data.color;
+            waButton.style.backgroundColor = data.color;
+            waButton.style.color = data.btnTextColor;
+            waButton.style.boxShadow = `0 10px 30px ${data.color}4d`;
+            waButtonText.innerText = data.waShort;
+            waButton.href = `https://wa.me/5493442668219?text=${encodeURIComponent(data.waMsg)}`;
+
+            if (scrollToContact) {
+                document.getElementById('contacto').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        renderCarousel();
+
+        window.addEventListener('load', () => {
+            setTimeout(() => selectOption(1, 'partner'), 80);
+        });
+
+        window.addEventListener('resize', () => {
+            const activeIndex = Array.from(document.querySelectorAll('.style-btn')).findIndex(b => b.classList.contains('active'));
+            const keys = ['campana', 'partner', 'vip'];
+            if (activeIndex >= 0) selectOption(activeIndex, keys[activeIndex]);
+        });
+
+        function reveal() {
+            const reveals = document.querySelectorAll(".reveal");
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                if (elementTop < windowHeight - 40) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal();
+    </script>
+</body>
+</html>
